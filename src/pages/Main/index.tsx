@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import * as Styled from "./styles";
 
-const Main: React.FC = () =>  {
-  return (
-    <div>Main</div>
-  )
-}
+const Main: React.FC = () => {
+  return <Styled.Title>Main</Styled.Title>;
+};
 
-export default Main
+export default Main;

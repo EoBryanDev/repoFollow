@@ -2,7 +2,7 @@
 import React, { useState, useCallback } from "react";
 // import {useMutation} from 'react-query'
 import * as Styled from "./styles";
-import { FaGithub, FaPlus, FaSpinner } from "react-icons/fa";
+import { FaBars, FaGithub, FaPlus, FaSpinner, FaTrash } from "react-icons/fa";
 import api from "../../services/api";
 
 const Main: React.FC = () => {
@@ -12,13 +12,15 @@ const Main: React.FC = () => {
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault;
+      e.preventDefault();
       const submit = async () => {
         setIsLoading(true);
         try {
           const resp = await api.get(`repos/${newRepo}`);
+          console.log(resp);
+          
           const data = {
-            name: resp.data.fullName,
+            name: resp.data.full_name,
           };
           setRepo([...repo, data]);
           setNewRepo("");
@@ -32,6 +34,11 @@ const Main: React.FC = () => {
     },
     [newRepo, repo]
   );
+
+  const handleDelete = useCallback((repoName: string) => {
+    const find = repo.filter(i => i.name !== repoName)
+    setRepo(find)
+  },[repo])
   return (
     <Styled.Container>
       <h1>
@@ -52,12 +59,30 @@ const Main: React.FC = () => {
             setNewRepo(e.target.value);
           }}
         />
-        <Styled.SubmitButton disabled={isLoading} loading={isLoading}>
+        <Styled.SubmitButton type="submit" disabled={isLoading} loading={isLoading || undefined}>
           {(isLoading && <FaSpinner color='#FFF' size={14} />) || (
             <FaPlus color='#fff' size={14} />
           )}
         </Styled.SubmitButton>
       </Styled.Form>
+
+      <Styled.List>
+        {repo.map((rep) => (
+          <li key={rep.name}>
+            <span>
+              <Styled.DeleteButton type="button" onClick={() => handleDelete(rep.name)}>
+                <FaTrash size={14} />
+              </Styled.DeleteButton>
+            {rep.name}
+            </span>
+
+
+            <a href=''>
+              <FaBars size={20} />
+            </a>
+          </li>
+        ))}
+      </Styled.List>
     </Styled.Container>
   );
 };

@@ -1,7 +1,7 @@
 import styled, { css, keyframes } from "styled-components";
 
 type TButton = {
-    loading: boolean
+    loading: boolean | undefined
 }
 
 export const Container = styled.div`
@@ -72,3 +72,34 @@ export const SubmitButton = styled.button<TButton>`
       }
     `}
 `;
+
+export const List = styled.ul`
+
+      list-style: none;
+      margin-top: 20px;
+
+      li{
+        padding: 15px 0 ;
+        display:  flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      & + li{
+        border-top: 1px solid #eee;
+      }
+
+      a{
+        color: #222;
+        text-decoration: none;
+      }
+`
+export const DeleteButton = styled.button`
+    background: transparent;
+    color: #222;
+    border: 0;
+    padding: 8px 7px;
+    outline: 0;
+    border-radius: 4px;
+`

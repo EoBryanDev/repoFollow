@@ -1,8 +1,11 @@
 import styled, { css, keyframes } from "styled-components";
 
-type TButton = {
-    loading: boolean | undefined
-}
+type TButtonParam = {
+  loading: boolean | undefined;
+};
+type TFormParam = {
+  alert: boolean;
+};
 
 export const Container = styled.div`
   max-width: 700px;
@@ -23,14 +26,14 @@ export const Container = styled.div`
     margin-right: 10px;
   }
 `;
-export const Form = styled.form`
+export const Form = styled.form<TFormParam>`
   margin-top: 30px;
   display: flex;
   flex-direction: row;
 
   input {
     flex: 1;
-    border: 1px solid #d2d2d2;
+    border: 1px solid ${({ alert }) => (alert ? "#ff0000" : "#d2d2d2")};
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 17px;
@@ -45,7 +48,7 @@ const spinnerEffect = keyframes`
         transform: rotate(360deg);
     }
 `;
-export const SubmitButton = styled.button<TButton>`
+export const SubmitButton = styled.button<TButtonParam>`
   background: #222;
   border: 0;
   border-radius: 4px;
@@ -74,32 +77,31 @@ export const SubmitButton = styled.button<TButton>`
 `;
 
 export const List = styled.ul`
+  list-style: none;
+  margin-top: 20px;
 
-      list-style: none;
-      margin-top: 20px;
+  li {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-      li{
-        padding: 15px 0 ;
-        display:  flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-      }
+  & + li {
+    border-top: 1px solid #eee;
+  }
 
-      & + li{
-        border-top: 1px solid #eee;
-      }
-
-      a{
-        color: #222;
-        text-decoration: none;
-      }
-`
-export const DeleteButton = styled.button`
-    background: transparent;
+  a {
     color: #222;
-    border: 0;
-    padding: 8px 7px;
-    outline: 0;
-    border-radius: 4px;
-`
+    text-decoration: none;
+  }
+`;
+export const DeleteButton = styled.button`
+  background: transparent;
+  color: #222;
+  border: 0;
+  padding: 8px 7px;
+  outline: 0;
+  border-radius: 4px;
+`;

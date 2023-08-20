@@ -11,6 +11,7 @@ const Repository: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [repository, setRepository] = useState<IRepo | null>(null);
   const [issues, setIssues] = useState<IIssues[] | null>(null);
+  const [page, setPage] = useState<number>(1);
 
   useEffect(() => {
     const getRepo = async () => {
@@ -25,7 +26,6 @@ const Repository: React.FC = () => {
             },
           }),
         ]);
-        console.log(issuesData.data);
 
         setRepository(respData.data);
         setIssues(issuesData.data);
@@ -38,6 +38,24 @@ const Repository: React.FC = () => {
 
     getRepo();
   }, [repo]);
+
+  useEffect(() => {
+    const loadIssuesPag = async () => {
+      const resp = await api.get(`/repos/${decodeURIComponent(repo!)}/issues`, {
+        params: {
+          state: "open",
+          page,
+          per_page: 5,
+        },
+      });
+      setIssues(resp.data);
+    };
+    loadIssuesPag();
+  }, [page, repo]);
+
+  const handlePage = (action: string) => {
+    setPage(action === "p" ? (page - 1 < 1 ? 1 : page - 1) : page + 1);
+  };
   if (isLoading) {
     return (
       <Styled.Loading>
@@ -72,6 +90,18 @@ const Repository: React.FC = () => {
           </li>
         ))}
       </Styled.IssuesList>
+      <Styled.PageActions>
+        <button
+          type='button'
+          onClick={() => handlePage("p")}
+          disabled={page - 1 < 1}
+        >
+          Prev
+        </button>
+        <button type='button' onClick={() => handlePage("n")}>
+          Next
+        </button>
+      </Styled.PageActions>
     </Styled.Container>
   );
 };

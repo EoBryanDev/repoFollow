@@ -99,11 +99,11 @@ export const IssuesList = styled.ul`
 `;
 
 export const PageActions = styled.div`
-display: flex;
-align-items: center;
-justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-button{
+  button {
     outline: 0;
     border: 0;
     background-color: #222;
@@ -111,9 +111,29 @@ button{
     padding: 5px 10px;
     border-radius: 4px;
 
-    &:disabled{
-        cursor: not-allowed;
-        opacity: 0.5;
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
     }
-}
+  }
+`;
+
+export const FilterList = styled.div`
+  margin: 15px 0;
+
+  button {
+    background: #333;
+    color: #d2d2d2;
+    outline: 0;
+    border: 0;
+    padding: 8px;
+    border-radius: 4px;
+    margin: 0 3px;
+    transition: 0.4s;
+
+    &:disabled {
+      background: #d2d2d2;
+      color: #333;
+    }
+  }
 `;

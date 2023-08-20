@@ -12,6 +12,7 @@ const Repository: React.FC = () => {
   const [repository, setRepository] = useState<IRepo | null>(null);
   const [issues, setIssues] = useState<IIssues[] | null>(null);
   const [page, setPage] = useState<number>(1);
+  const [issuedView, setIssuedView] = useState<string>("open");
 
   useEffect(() => {
     const getRepo = async () => {
@@ -21,7 +22,7 @@ const Repository: React.FC = () => {
           api.get(`/repos/${decodeURIComponent(repo!)}`),
           api.get(`/repos/${decodeURIComponent(repo!)}/issues`, {
             params: {
-              state: "open",
+              state: issuedView,
               per_page: 5,
             },
           }),
@@ -43,7 +44,7 @@ const Repository: React.FC = () => {
     const loadIssuesPag = async () => {
       const resp = await api.get(`/repos/${decodeURIComponent(repo!)}/issues`, {
         params: {
-          state: "open",
+          state: issuedView,
           page,
           per_page: 5,
         },
@@ -51,10 +52,16 @@ const Repository: React.FC = () => {
       setIssues(resp.data);
     };
     loadIssuesPag();
-  }, [page, repo]);
+  }, [page, repo, issuedView]);
 
   const handlePage = (action: string) => {
     setPage(action === "p" ? (page - 1 < 1 ? 1 : page - 1) : page + 1);
+  };
+
+  const handleIssues = (action: string) => {
+    setIssuedView(
+      action === "all" ? "all" : action === "closed" ? "closed" : "open"
+    );
   };
   if (isLoading) {
     return (
@@ -73,6 +80,29 @@ const Repository: React.FC = () => {
         <h1>{repository?.name}</h1>
         <p>{repository?.description}</p>
       </Styled.Owner>
+      <Styled.FilterList>
+        <button
+          type='button'
+          onClick={() => handleIssues("all")}
+          disabled={issuedView === "all"}
+        >
+          All
+        </button>
+        <button
+          type='button'
+          onClick={() => handleIssues("closed")}
+          disabled={issuedView === "closed"}
+        >
+          Closed
+        </button>
+        <button
+          type='button'
+          onClick={() => handleIssues("open")}
+          disabled={issuedView === "open"}
+        >
+          Open
+        </button>
+      </Styled.FilterList>
 
       <Styled.IssuesList>
         {issues?.map((issue) => (

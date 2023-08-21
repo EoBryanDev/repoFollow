@@ -38,6 +38,7 @@ const Repository: React.FC = () => {
     };
 
     getRepo();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repo]);
 
   useEffect(() => {
